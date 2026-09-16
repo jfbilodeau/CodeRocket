@@ -70,6 +70,14 @@ jobs:
           tenant-id: 14f08b43-3b8c-4f1c-87c5-71e2bb2177f3
           subscription-id: 6fbbcbd7-1450-4e1c-b5b9-f2eb39d50536
 
+      - name: Select deployment parameters
+        run: |
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "DEPLOYMENT_PARAMETERS=main.parameters.json" >> "$GITHUB_ENV"
+          else
+            echo "DEPLOYMENT_PARAMETERS=main.parameters-dev.json" >> "$GITHUB_ENV"
+          fi
+
       # - name: Preview infrastructure changes
       #   uses: azure/cli@v2
       #   with:
@@ -86,7 +94,7 @@ jobs:
           scope: resourcegroup
           resourceGroupName: CodeRocketProd
           template: main.bicep
-          parameters: main.parameters.json
+          parameters: ${{ env.DEPLOYMENT_PARAMETERS }}
           deploymentName: coderocket-production
           deploymentMode: Incremental
 
