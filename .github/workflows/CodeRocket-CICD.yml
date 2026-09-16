@@ -83,7 +83,7 @@ jobs:
         uses: azure/arm-deploy@v2
         with:
           scope: resourcegroup
-          resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
+          resourceGroupName: CodeRocketProd
           template: main.bicep
           parameters: main.parameters.json
           deploymentName: coderocket-production
