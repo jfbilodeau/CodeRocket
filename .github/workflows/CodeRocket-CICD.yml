@@ -70,14 +70,14 @@ jobs:
           tenant-id: 14f08b43-3b8c-4f1c-87c5-71e2bb2177f3
           subscription-id: 6fbbcbd7-1450-4e1c-b5b9-f2eb39d50536
 
-      - name: Preview infrastructure changes
-        uses: azure/cli@v2
-        with:
-          inlineScript: |
-            az deployment group what-if \
-              --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
-              --template-file main.bicep \
-              --parameters @main.parameters.json
+      # - name: Preview infrastructure changes
+      #   uses: azure/cli@v2
+      #   with:
+      #     inlineScript: |
+      #       az deployment group what-if \
+      #         --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+      #         --template-file main.bicep \
+      #         --parameters @main.parameters.json
 
       - name: Deploy infrastructure
         uses: azure/arm-deploy@v2
