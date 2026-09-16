@@ -1,0 +1,52 @@
+name: CodeRocket - Build and test
+
+env:
+  BUILD_CONFIGURATION: Release
+  PUBLISH_DIRECTORY: ${{ github.workspace }}/publish
+  PACKAGE_PATH: ${{ github.workspace }}/CodeRocket.zip
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore CodeRocket.csproj
+
+      - name: Build
+        run: dotnet build CodeRocket.csproj --configuration $BUILD_CONFIGURATION --no-restore
+
+      - name: Run unit tests
+        run: dotnet test CodeRocket.csproj --configuration $BUILD_CONFIGURATION --no-build
+
+      - name: Publish production build
+        run: dotnet publish CodeRocket.csproj --configuration $BUILD_CONFIGURATION --no-build --output $PUBLISH_DIRECTORY
+
+      - name: Create deployment package
+        run: zip -r $PACKAGE_PATH .
+        working-directory: ${{ env.PUBLISH_DIRECTORY }}
+
+      - name: Save deployment package
+        uses: actions/upload-artifact@v4
+        with:
+          name: CodeRocket-deployment-package
+          path: ${{ env.PACKAGE_PATH }}
+          if-no-files-found: error
