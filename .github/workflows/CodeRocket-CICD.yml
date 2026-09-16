@@ -64,5 +64,5 @@ jobs:
         uses: azure/login@v3
         with:
           client-id: 540c4e9c-0a5a-49b8-b3f3-c36d09bccea0
-          tenant-id: 4f5b6ddf-0858-4db0-95e7-f52e31ca350e
+          tenant-id: 14f08b43-3b8c-4f1c-87c5-71e2bb2177f3
           subscription-id: 6fbbcbd7-1450-4e1c-b5b9-f2eb39d50536
