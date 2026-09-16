@@ -80,6 +80,7 @@ jobs:
       #         --parameters @main.parameters.json
 
       - name: Deploy infrastructure
+        id: deploy-infrastructure
         uses: azure/arm-deploy@v2
         with:
           scope: resourcegroup
@@ -88,3 +89,15 @@ jobs:
           parameters: main.parameters.json
           deploymentName: coderocket-production
           deploymentMode: Incremental
+
+      - name: Download deployment package
+        uses: actions/download-artifact@v4
+        with:
+          name: CodeRocket-deployment-package
+          path: ${{ github.workspace }}
+
+      - name: Deploy application package
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ steps.deploy-infrastructure.outputs.webAppName }}
+          package: ${{ env.PACKAGE_PATH }}
