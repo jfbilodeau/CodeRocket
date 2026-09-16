@@ -50,3 +50,19 @@ jobs:
           name: CodeRocket-deployment-package
           path: ${{ env.PACKAGE_PATH }}
           if-no-files-found: error
+
+  deploy:
+    name: Deploy to Azure
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Log in with federated identity
+        uses: azure/login@v3
+        with:
+          client-id: 540c4e9c-0a5a-49b8-b3f3-c36d09bccea0
+          tenant-id: 4f5b6ddf-0858-4db0-95e7-f52e31ca350e
+          subscription-id: 6fbbcbd7-1450-4e1c-b5b9-f2eb39d50536
