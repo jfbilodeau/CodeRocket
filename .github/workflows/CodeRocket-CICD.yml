@@ -101,3 +101,4 @@ jobs:
         with:
           app-name: ${{ steps.deploy-infrastructure.outputs.webAppName }}
           package: ${{ env.PACKAGE_PATH }}
+          slot-name: staging
